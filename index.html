@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invitación a mi cumple</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Arial Black', sans-serif;
+    background: radial-gradient(circle, #020617, #0f172a);
+    color: white;
+    text-align: center;
+    overflow: hidden;
+}
+
+/* Fondo animado */
+body::before {
+    content: "";
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: repeating-linear-gradient(
+        45deg,
+        rgba(56,189,248,0.1) 0px,
+        rgba(56,189,248,0.1) 2px,
+        transparent 2px,
+        transparent 40px
+    );
+    animation: moveBg 12s linear infinite;
+}
+
+@keyframes moveBg {
+    from { transform: translate(0,0); }
+    to { transform: translate(-200px,-200px); }
+}
+
+.container {
+    position: relative;
+    z-index: 2;
+    padding: 20px;
+}
+
+h1 {
+    color: #facc15;
+    animation: glow 1.5s infinite alternate;
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 10px #facc15; }
+    to { text-shadow: 0 0 30px #facc15; }
+}
+
+/* Contador */
+.countdown {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.box {
+    background: rgba(0,0,0,0.6);
+    padding: 15px;
+    border-radius: 15px;
+    width: 80px;
+    animation: bounce 1s infinite alternate;
+}
+
+@keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-10px); }
+}
+
+.number {
+    font-size: 24px;
+    color: #38bdf8;
+}
+
+/* Botones */
+.btn {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 15px 25px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    animation: pulse 1.5s infinite;
+}
+
+.maps { background: #22c55e; }
+.whatsapp { background: #25D366; }
+.music { background: #f59e0b; }
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+}
+
+.info {
+    margin-top: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🎉 INVITACIÓN A MI CUMPLE 🎉</h1>
+
+<h2 id="saludo">Hola invitado 👀</h2>
+
+<h3>⏳ ¡Faltan!</h3>
+
+<div class="countdown">
+    <div class="box"><div id="days" class="number">00</div><div>DÍAS</div></div>
+    <div class="box"><div id="hours" class="number">00</div><div>HORAS</div></div>
+    <div class="box"><div id="minutes" class="number">00</div><div>MIN</div></div>
+    <div class="box"><div id="seconds" class="number">00</div><div>SEG</div></div>
+</div>
+
+<div class="info">
+📅 <b>04 de abril de 2026</b><br>
+⏰ <b>01:00 pm</b><br><br>
+
+📍 Embarcadero Las Flores Nativitas<br>
+Canal 236, San Jerónimo, Xochimilco,<br>
+16090, Ciudad de México
+</div>
+
+<a class="btn maps" href="https://www.google.com/maps/search/?api=1&query=Canal+236+San+Jerónimo+Xochimilco+16090" target="_blank">
+📍 Cómo llegar
+</a>
+
+<br>
+
+<a id="whatsappBtn" class="btn whatsapp" target="_blank">
+📲 Confirmar asistencia
+</a>
+
+<br>
+
+<button class="btn music" onclick="playMusic()">🎵 Activar música</button>
+
+</div>
+
+<audio id="music" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// CONTADOR
+const eventDate = new Date("April 4, 2026 13:00:00").getTime();
+
+setInterval(() => {
+    const now = new Date().getTime();
+    const d = eventDate - now;
+
+    days.innerHTML = Math.floor(d/(1000*60*60*24));
+    hours.innerHTML = Math.floor((d/(1000*60*60))%24);
+    minutes.innerHTML = Math.floor((d/1000/60)%60);
+    seconds.innerHTML = Math.floor((d/1000)%60);
+}, 1000);
+
+// OBTENER NOMBRE DESDE LINK
+const params = new URLSearchParams(window.location.search);
+const nombre = params.get("nombre");
+
+if(nombre){
+    document.getElementById("saludo").innerHTML = "🔥 " + nombre + ", estás invitado 🔥";
+}
+
+// BOTÓN WHATSAPP
+const numero = "525535762530"; // ← PON TU NÚMERO
+
+const mensaje = encodeURIComponent(
+`Hola, soy ${nombre || "invitado"} y confirmo mi asistencia a tu fiesta 🎉`
+);
+
+document.getElementById("whatsappBtn").href =
+`https://wa.me/${numero}?text=${mensaje}`;
+
+// MÚSICA
+function playMusic(){
+    document.getElementById("music").play();
+}
+</script>
+
+</body>
+</html>
